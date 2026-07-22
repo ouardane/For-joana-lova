@@ -1,3 +1,29 @@
+// Real moon phase calculation
+function getMoonPhase() {
+    const now = new Date();
+    // Known new moon: Jan 6, 2000
+    const known = new Date(2000, 0, 6, 18, 14, 0);
+    const cycle = 29.53058867; // days
+    const diff = (now - known) / 86400000;
+    const phase = ((diff % cycle) + cycle) % cycle;
+    const dayInCycle = Math.floor(phase);
+    
+    // Moon emojis matching real phases
+    if (dayInCycle < 1) return '\u{1F311}';       // New Moon
+    if (dayInCycle < 7) return '\u{1F312}';       // Waxing Crescent
+    if (dayInCycle < 8) return '\u{1F313}';       // First Quarter
+    if (dayInCycle < 14) return '\u{1F314}';      // Waxing Gibbous
+    if (dayInCycle < 16) return '\u{1F315}';      // Full Moon
+    if (dayInCycle < 22) return '\u{1F316}';      // Waning Gibbous
+    if (dayInCycle < 23) return '\u{1F317}';      // Last Quarter
+    return '\u{1F318}';                           // Waning Crescent
+}
+
+// Set moon emoji everywhere
+const moonEmoji = getMoonPhase();
+document.querySelectorAll('#moon-emoji, #moon-emoji-2').forEach(el => { el.textContent = moonEmoji; });
+document.getElementById('page-title').textContent = moonEmoji;
+
 // Decryption
 async function deriveKey(password, salt) {
     const enc = new TextEncoder();
